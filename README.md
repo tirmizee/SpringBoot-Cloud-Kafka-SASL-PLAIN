@@ -45,6 +45,36 @@ services:
 
 ```
 
+### application.yaml
+
+```yaml
+
+spring:
+  cloud:
+    stream:
+      binders:
+        kafka-plain:
+          type: kafka
+          environment.spring.cloud.stream.kafka.binder:
+            brokers: localhost:9096
+            autoAddPartitions: true
+            autoCreateTopics: true
+            configuration:
+              security.protocol: SASL_PLAINTEXT
+              sasl.mechanism: PLAIN
+              sasl.jaas.config: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"test\" password=\"testtest\";"
+      bindings:
+        customerConsumer:
+          binder: kafka-plain
+          group: Customer.Group
+          destination: topic.customer
+        customerProducer:
+          binder: kafka-plain
+          destination: topic.customer
+
+```
+
+
 ### Reference 
 
 - https://stackoverflow.com/questions/67832769/connect-to-kakfka-broker-with-sasl-plaintext-in-docker-compose-binami-kafka
