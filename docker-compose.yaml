@@ -1,10 +1,3 @@
-# SpringBoot-Cloud-Kafka-SASL-PLAIN
-
-
-### docker-compose.yaml
-
-```yaml
-
 version: "3.8"
 services:
   zookeeper:
@@ -18,6 +11,7 @@ services:
     container_name: kafka
     image: bitnami/kafka:3.1
     ports:
+      - '9092:9092'
       - '9096:9096'
     environment:
       - KAFKA_BROKER_ID=1
@@ -25,27 +19,9 @@ services:
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
       - KAFKA_CFG_LISTENERS=INTERNAL://:9092,EXTERNAL://:9096
-      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka:9092,EXTERNAL://kafka:9096
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://localhost:9092,EXTERNAL://localhost:9096
       - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
     volumes:
       - './.kafka/kafka_jaas.conf:/opt/bitnami/kafka/conf/kafka_jaas.conf'
     depends_on:
       - zookeeper
-  kafdrop:
-    container_name: kafdrop
-    image: obsidiandynamics/kafdrop
-    restart: "no"
-    ports:
-      - "9000:9000"
-    environment:
-      KAFKA_BROKERCONNECT: "INTERNAL://kafka:9092"
-      JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
-    depends_on:
-      - "kafka"
-
-```
-
-### Reference 
-
-- https://stackoverflow.com/questions/67832769/connect-to-kakfka-broker-with-sasl-plaintext-in-docker-compose-binami-kafka
-- https://github.com/israelio/kafkajs-sasl-docker-example/blob/master/docker-compose.yml
