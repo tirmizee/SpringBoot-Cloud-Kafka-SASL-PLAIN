@@ -5,7 +5,7 @@ spring:
         kafka-plain:
           type: kafka
           environment.spring.cloud.stream.kafka.binder:
-            brokers: localhost:9096
+            brokers: 127.0.0.1:9093
             autoAddPartitions: true
             autoCreateTopics: true
             configuration:
@@ -20,3 +20,11 @@ spring:
         customerProducer:
           binder: kafka-plain
           destination: topic.customer
+logging:
+  level.root: INFO
+  level.com.tirmizee: INFO
+  org.springframework: INFO
+  org:
+    apache:
+      kafka:
+        clients: WARNING
